@@ -17,7 +17,7 @@ jobs:
 
         # Gradle test를 실행한다
     - name: Test with Gradle  
-      run: ./gradlew --info test----> 여기까지 진행후 *.jar파일 만듬
+      run: ./gradlew --info test
 
     # 2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
@@ -27,7 +27,7 @@ jobs:
 
     # 3. Docker 이미지 빌드
     - name: docker image build  
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/devops_step1 .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/devops1 .
 
     # 4. DockerHub 로그인
     - name: docker login      
@@ -39,7 +39,7 @@ jobs:
     # 5. Docker Hub 이미지 푸시
     - name: docker Hub push
  
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/devops_step1
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/devops1
 
   deploy:
     needs: build  # build 후에 실행되도록 정의
@@ -54,5 +54,5 @@ jobs:
     # 8080 -> 80 포트로 수행하도록 지정
     - name: Docker run
       run: |   
-        sudo docker stop devops_step1 && sudo docker rm devops_step1 && sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/devops_step1:latest
-        sudo docker run -d -p 80:8080 --name devops_step1 --restart always ${{ secrets.DOCKER_USERNAME }}/devops_step1:latest
+        sudo docker stop devops_step1 && sudo docker rm devops_step1 && sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/devops1:latest
+        sudo docker run -d -p 80:8080 --name devops_step1 --restart always ${{ secrets.DOCKER_USERNAME }}/devops1:latest
